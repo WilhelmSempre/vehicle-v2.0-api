@@ -1,0 +1,21 @@
+os: [
+  linux
+]
+cache:
+  directories:
+    - $HOME/.composer/cache/files
+allow_failures:
+  - php: hhvm
+language: php
+php:
+  - "7.1"
+  - "7.2"
+  - "7.3"
+  - hhvm
+before_script: composer install
+services: mysql
+script: phpunit
+#install:
+#  - php bin/console doctrine:database:create --env=production
+#  - php bin/console doctrine:schema:create --env=production
+#  - php bin/console doctrine:fixtures:load -n --env=production
