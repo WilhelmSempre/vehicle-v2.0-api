@@ -9,3 +9,6 @@ package.tar
 /packages.json
 /.phpunit
 symfony.lock
+logs/
+var/cache
+var/log
