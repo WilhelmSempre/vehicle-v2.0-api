@@ -8,10 +8,8 @@ allow_failures:
   - php: hhvm
 language: php
 php:
-  - "7.1"
   - "7.2"
   - "7.3"
-  - hhvm
 before_script: composer install
 services: mysql
 script: phpunit
