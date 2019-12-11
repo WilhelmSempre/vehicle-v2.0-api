@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\ApiAuthorization;
+use JMS\Serializer\Serializer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,16 +36,23 @@ class MainController extends AbstractController
     {
         $isSecretValid = $_ENV['APP_SECRET'] === $secret && $secret !== '';
 
+        $apiAuthorization = new ApiAuthorization();
+
+        $apiAuthorization
+            ->setStatus(Response::HTTP_OK)
+            ->setMessage('')
+        ;
+
         if (!$isSecretValid) {
-            return new JsonResponse([
-                'status' => Response::HTTP_FORBIDDEN,
-                'message' => 'Invalid secret key',
-            ], Response::HTTP_FORBIDDEN);
+            $apiAuthorization
+                ->setStatus(Response::HTTP_FORBIDDEN)
+                ->setMessage('Invalid secret key')
+            ;
         }
 
-        return new JsonResponse([
-            'status' => Response::HTTP_OK,
-            'message' => '',
-        ], Response::HTTP_OK);
+        $respone = new Response();
+        $respone->setContent(serialize($apiAuthorization));
+
+        return $respone;
     }
 }
