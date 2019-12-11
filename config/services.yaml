@@ -27,8 +27,13 @@ services:
     # please note that last definitions always *replace* previous ones
 
     vehicle.response.listener:
-        class: App\Services\ResponseListener
+        class: App\Listener\ResponseListener
         arguments:
-            - '@jms_serializer.serializer'
+            - ''
         tags:
             - { event: kernel.response, name: kernel.event_listener, method: listen, priority: 0 }
+
+    vehicle.endpoint.service:
+        class: App\Services\EndpointService
+        arguments:
+            - '@jms_serializer.serializer'

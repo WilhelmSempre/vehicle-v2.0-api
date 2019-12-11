@@ -6,22 +6,23 @@ use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
 /**
- * Class ResponseListener
+ * Class EndpointService
  * @package App\Services
  *
  * @author Rafał Głuszak <rafal.gluszak@gmail.com>
  */
-class ResponseListener
+class EndpointService
 {
 
-    /** @var SerializerInterface */
+    /**
+     * @var SerializerInterface
+     */
     private $serializer;
 
     /**
-     * ResponseListener constructor.
+     * EndpointService constructor.
      * @param SerializerInterface $serializer
      */
     public function __construct(SerializerInterface $serializer)
@@ -30,14 +31,14 @@ class ResponseListener
     }
 
     /**
-     * @param Response $response
      * @param Request $request
+     * @param Response $response
      * @return Response
      */
-    public function serializeResponse(Response $response, Request $request): Response
+    public function serialize(Request $request, Response $response): Response
     {
         $format = $request->query
-            ->get('format') ?? 'json';
+                ->get('format') ?? 'json';
 
         $format = in_array($format, ['xml', 'json'], true) ? $format : 'json';
 
@@ -53,25 +54,5 @@ class ResponseListener
         $response->setContent($serializedResponse);
 
         return $response;
-    }
-
-    /**
-     * @param ResponseEvent $responseEvent
-     * @return ResponseEvent
-     */
-    public function listen(ResponseEvent $responseEvent): ResponseEvent
-    {
-        $response = $responseEvent->getResponse();
-        $request = $responseEvent->getRequest();
-
-        if (!$response) {
-            return $responseEvent;
-        }
-
-        $response = $this->serializeResponse($response, $request);
-
-        $responseEvent->setResponse($response);
-
-        return $responseEvent;
     }
 }
