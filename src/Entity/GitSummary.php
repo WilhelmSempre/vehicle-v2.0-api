@@ -24,7 +24,7 @@ class GitSummary
      *
      * @var string|null
      */
-    private $branchName;
+    private ?string $branchName;
 
     /**
      * @Serializer\Type("string")
@@ -33,7 +33,7 @@ class GitSummary
      *
      * @var string|null
      */
-    private $lastCommitMessage;
+    private ?string $lastCommitMessage;
 
     /**
      * @Serializer\Type("string")
@@ -42,7 +42,7 @@ class GitSummary
      *
      * @var string|null
      */
-    private $lastCommitAuthor;
+    private ?string $lastCommitAuthor;
 
     /**
      * @Serializer\Type("string")
@@ -51,7 +51,7 @@ class GitSummary
      *
      * @var string|null
      */
-    private $lastCommitDate;
+    private ?string $lastCommitDate;
 
     /**
      * @Serializer\Type("string")
@@ -60,7 +60,7 @@ class GitSummary
      *
      * @var string|null
      */
-    private $lastCommitHash;
+    private ?string $lastCommitHash;
 
     /**
      * @return string|null

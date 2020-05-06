@@ -22,7 +22,9 @@
         "symfony/framework-bundle": "4.4.*",
         "symfony/orm-pack": "^1.0",
         "symfony/yaml": "4.4.*",
-        "ext-json": "*"
+        "ext-json": "*",
+        "ext-openssl": "*",
+        "ext-sodium": "*"
     },
     "require-dev": {
         "easycorp/easy-log-handler": "^1.0.7",

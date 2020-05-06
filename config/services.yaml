@@ -29,12 +29,12 @@ services:
     vehicle.response.listener:
         class: App\Listener\ResponseListener
         arguments:
-            - '@vehicle.endpoint.service'
+            - '@vehicle.api.request.service'
         tags:
             - { event: kernel.response, name: kernel.event_listener, method: listen, priority: 0 }
 
-    vehicle.endpoint.service:
-        class: App\Services\EndpointService
+    vehicle.api.request.service:
+        class: App\Services\ApiRequestService
         arguments:
             - '@jms_serializer.serializer'
 
@@ -42,3 +42,6 @@ services:
         class: App\Services\GitService
         arguments:
             - '@kernel'
+
+    vehicle.authorization.service:
+        class: App\Services\AuthorizationService

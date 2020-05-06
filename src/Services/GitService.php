@@ -14,7 +14,7 @@ class GitService
     /**
      * @var string
      */
-    private $projectDir;
+    private string $projectDir;
 
     /**
      * GitService constructor.

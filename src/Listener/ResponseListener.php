@@ -2,7 +2,7 @@
 
 namespace App\Listener;
 
-use App\Services\EndpointService;
+use App\Services\ApiRequestService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
@@ -16,17 +16,17 @@ class ResponseListener
 {
 
     /**
-     * @var EndpointService
+     * @var ApiRequestService
      */
-    private $endpointService;
+    private ApiRequestService $apiRequestService;
 
     /**
      * ResponseListener constructor.
-     * @param EndpointService $endpointService
+     * @param ApiRequestService $apiRequestService
      */
-    public function __construct(EndpointService $endpointService)
+    public function __construct(ApiRequestService $apiRequestService)
     {
-        $this->endpointService = $endpointService;
+        $this->apiRequestService = $apiRequestService;
     }
 
     /**
@@ -43,7 +43,7 @@ class ResponseListener
         }
 
         if ($response->getStatusCode() === Response::HTTP_OK) {
-            $response = $this->endpointService
+            $response = $this->apiRequestService
                 ->serialize($request, $response)
             ;
 

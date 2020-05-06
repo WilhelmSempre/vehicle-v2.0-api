@@ -25,7 +25,7 @@ class ApiAuthorization
      *
      * @var string|null
      */
-    private $status;
+    private ?string $status;
 
     /**
      * @Serializer\Type("string")
@@ -34,7 +34,7 @@ class ApiAuthorization
      *
      * @var string|null
      */
-    private $message;
+    private ?string $message;
 
     /**
      * @param string $status

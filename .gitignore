@@ -21,4 +21,5 @@ var/log
 /public/bundles/
 /var/
 /vendor/
+certs/
 ###< symfony/framework-bundle ###

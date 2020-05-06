@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\ApiAuthorization;
+use App\Services\AuthorizationService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -14,14 +16,15 @@ use Symfony\Component\Routing\Annotation\Route;
 class AuthorizationController extends AbstractController
 {
     /**
-     * @Route("/authorize/{secret}", name="authorization")
+     * @Route("/authorize", name="authorization")
      *
-     * @param string $secret
+     * @param Request $request
+     * @param AuthorizationService $authorizationService
      * @return Response
      */
-    public function authorizeClient(string $secret): Response
+    public function authorizeClient(Request $request, AuthorizationService $authorizationService): Response
     {
-        $isSecretValid = $_ENV['APP_SECRET'] === $secret;
+        $isSecretValid = $authorizationService->isSecretValid($request);
 
         $apiAuthorization = new ApiAuthorization();
 

@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\GitSummary;
 use App\Services\GitService;
+use App\Services\AuthorizationService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -15,14 +17,15 @@ use Symfony\Component\Routing\Annotation\Route;
 class GitController extends AbstractController
 {
     /**
-     * @Route("/git/summary/{secret}", name="git_summary")
+     * @Route("/git/summary", name="git_summary")
+     * @param Request $request
      * @param GitService $gitService
-     * @param string $secret
+     * @param AuthorizationService $authorizationService
      * @return Response
      */
-    public function gitAction(GitService $gitService, string $secret): Response
+    public function gitAction(Request $request, GitService $gitService, AuthorizationService $authorizationService): Response
     {
-        $isSecretValid = $_ENV['APP_SECRET'] === $secret;
+        $isSecretValid = $authorizationService->isSecretValid($request);
 
         if (!$isSecretValid) {
             return new Response();

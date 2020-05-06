@@ -2,28 +2,28 @@
 
 namespace App\Services;
 
-use App\Type\EndpointResponseType;
+use App\Type\ApiResponseType;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Class EndpointService
+ * Class ApiRequestService
  * @package App\Services
  *
  * @author Rafał Głuszak <rafal.gluszak@gmail.com>
  */
-class EndpointService
+class ApiRequestService
 {
 
     /**
      * @var SerializerInterface
      */
-    private $serializer;
+    private SerializerInterface $serializer;
 
     /**
-     * EndpointService constructor.
+     * ApiRequestService constructor.
      * @param SerializerInterface $serializer
      */
     public function __construct(SerializerInterface $serializer)
@@ -39,10 +39,10 @@ class EndpointService
     public function serialize(Request $request, Response $response): Response
     {
         $format = $request->query
-                ->get('format') ?? EndpointResponseType::JSON;
+                ->get('format') ?? ApiResponseType::JSON;
         ;
 
-        $format = in_array($format, [EndpointResponseType::XML, EndpointResponseType::JSON], true) ? $format : EndpointResponseType::JSON;
+        $format = in_array($format, [ApiResponseType::XML, ApiResponseType::JSON], true) ? $format : ApiResponseType::JSON;
 
         $context = new SerializationContext();
         $context->setSerializeNull(true);
