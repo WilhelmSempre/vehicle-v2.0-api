@@ -3,6 +3,7 @@
 namespace App\Listener;
 
 use App\Services\EndpointService;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
 /**
@@ -41,10 +42,13 @@ class ResponseListener
             return $responseEvent;
         }
 
-        $response = $this->endpointService
-            ->serialize($request, $response);
+        if ($response->getStatusCode() === Response::HTTP_OK) {
+            $response = $this->endpointService
+                ->serialize($request, $response)
+            ;
 
-        $responseEvent->setResponse($response);
+            $responseEvent->setResponse($response);
+        }
 
         return $responseEvent;
     }

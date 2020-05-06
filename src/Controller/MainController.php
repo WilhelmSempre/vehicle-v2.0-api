@@ -25,34 +25,4 @@ class MainController extends AbstractController
     {
         return new Response();
     }
-
-    /**
-     * @Route("/authorize/{secret}", name="authorization")
-     *
-     * @param string $secret
-     * @return Response
-     */
-    public function authorizeClient(string $secret): Response
-    {
-        $isSecretValid = $_ENV['APP_SECRET'] === $secret && $secret !== '';
-
-        $apiAuthorization = new ApiAuthorization();
-
-        $apiAuthorization
-            ->setStatus(Response::HTTP_OK)
-            ->setMessage('')
-        ;
-
-        if (!$isSecretValid) {
-            $apiAuthorization
-                ->setStatus(Response::HTTP_FORBIDDEN)
-                ->setMessage('Invalid secret key')
-            ;
-        }
-
-        $respone = new Response();
-        $respone->setContent(serialize($apiAuthorization));
-
-        return $respone;
-    }
 }

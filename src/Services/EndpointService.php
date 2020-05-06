@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Type\EndpointResponseType;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,9 +39,10 @@ class EndpointService
     public function serialize(Request $request, Response $response): Response
     {
         $format = $request->query
-                ->get('format') ?? 'json';
+                ->get('format') ?? EndpointResponseType::JSON;
+        ;
 
-        $format = in_array($format, ['xml', 'json'], true) ? $format : 'json';
+        $format = in_array($format, [EndpointResponseType::XML, EndpointResponseType::JSON], true) ? $format : EndpointResponseType::JSON;
 
         $context = new SerializationContext();
         $context->setSerializeNull(true);
