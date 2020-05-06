@@ -28,17 +28,61 @@ class GitService
     /**
      * @return array
      */
+    private function getGitLogs(): array
+    {
+        chdir($this->projectDir);
+        exec('git log',$gitConsoleData);
+
+        $history = [];
+
+        foreach($gitConsoleData as $line) {
+            if (strpos($line, 'commit') === 0) {
+                if (!empty($commit)) {
+                    array_push($history, $commit);
+                    unset($commit);
+                }
+
+                $commit['hash'] = substr($line, strlen('commit'));
+            } else if (strpos($line, 'Author') === 0) {
+                $commit['author'] = substr($line, strlen('Author:'));
+            } else if(strpos($line, 'Date') === 0) {
+                $commit['date'] = substr($line, strlen('Date:'));
+            } else {
+                if (isset($commit['message'])) {
+                    $commit['message'] .= $line;
+                } else {
+                    $commit['message'] = $line;
+                }
+            }
+        }
+
+        return $history;
+    }
+
+    /**
+     * @return array
+     */
+    public function getLastGitCommit(): array
+    {
+        $gitLogsArray = $this->getGitLogs();
+
+        return array_shift($gitLogsArray);
+    }
+
+    /**
+     * @return array
+     */
     public function loadGitSummary(): array
     {
         $branchName = $this->getBranchName();
-        $lastCommitMessage = $this->getLastCommitMessage();
-        $lastCommitDetails = $this->getLastCommitDetail();
+        $lastGitCommit = $this->getLastGitCommit();
 
         return [
             'branch' => $branchName,
-            'commit_message' => $lastCommitMessage,
-            'commit_author' => $lastCommitDetails['author'],
-            'commit_date' => $lastCommitDetails['date'],
+            'commit_hash' => $lastGitCommit['hash'],
+            'commit_message' => $lastGitCommit['message'],
+            'commit_author' => $lastGitCommit['author'],
+            'commit_date' => $lastGitCommit['date'],
         ];
     }
 
@@ -47,47 +91,9 @@ class GitService
      */
     private function getBranchName(): string
     {
-        $gitHeadFile = sprintf('%s/.git/HEAD', $this->projectDir);
+        chdir($this->projectDir);
+        exec('git rev-parse --abbrev-ref HEAD',$gitBranch);
 
-        $branchName = 'No branch name';
-
-        $stringFromFile = file_exists($gitHeadFile) ? file($gitHeadFile, FILE_USE_INCLUDE_PATH) : '';
-
-        if (isset($stringFromFile) && is_array($stringFromFile)) {
-            $firstLine = $stringFromFile[0];
-            $explodedString = explode('/', $firstLine, 3);
-
-            $branchName = trim($explodedString[2]);
-        }
-
-        return $branchName;
-    }
-
-    /**
-     * @return string
-     */
-    private function getLastCommitMessage(): string
-    {
-        $gitCommitMessageFile = sprintf('%s/.git/COMMIT_EDITMSG', $this->projectDir);
-        $commitMessage = file_exists($gitCommitMessageFile) ? file($gitCommitMessageFile, FILE_USE_INCLUDE_PATH) : '';
-
-        return is_array($commitMessage) ? trim($commitMessage[0]) : '';
-    }
-
-    /**
-     * @return array
-     */
-    private function getLastCommitDetail(): array
-    {
-        $logs = [];
-
-        $gitHeadFile = sprintf('%s/.git/HEAD', $this->projectDir);
-        $gitLogs = file_exists($gitHeadFile) ? file($gitHeadFile, FILE_USE_INCLUDE_PATH) : '';
-
-        $logExploded = explode(' ', end($gitLogs));
-        $logs['author'] = $logExploded[2] ?? 'Not defined';
-        $logs['date'] = isset($logExploded[4]) ? date('Y/m/d H:i', $logExploded[4]) : 'Not defined';
-
-        return $logs;
+        return $gitBranch[0] ?? 'Not detected';
     }
 }

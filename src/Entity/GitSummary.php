@@ -54,6 +54,15 @@ class GitSummary
     private $lastCommitDate;
 
     /**
+     * @Serializer\Type("string")
+     * @Accessor(getter="getLastCommitHash",setter="setLastCommitHash")
+     * @Serializer\XmlElement(cdata=false)
+     *
+     * @var string|null
+     */
+    private $lastCommitHash;
+
+    /**
      * @return string|null
      */
     public function getBranchName(): ?string
@@ -127,5 +136,24 @@ class GitSummary
         $this->lastCommitMessage = $lastCommitMessage;
 
         return $this;
+    }
+
+    /**
+     * @param string|null $lastCommitHash
+     * @return GitSummary
+     */
+    public function setLastCommitHash(?string $lastCommitHash): self
+    {
+        $this->lastCommitHash = $lastCommitHash;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getLastCommitHash(): ?string
+    {
+        return $this->lastCommitHash;
     }
 }
