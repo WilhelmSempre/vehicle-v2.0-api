@@ -12,6 +12,12 @@
         "php": "^7.4",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "ext-json": "*",
+        "ext-openssl": "*",
+        "ext-sodium": "*",
+        "antishov/doctrine-extensions-bundle": "^1.4",
+        "doctrine/annotations": "^1.10",
+        "gedmo/doctrine-extensions": "^2.4",
         "jms/serializer-bundle": "^3.5",
         "sensio/framework-extra-bundle": "^5.5",
         "sensiolabs/security-checker": "^6.0",
@@ -21,16 +27,14 @@
         "symfony/flex": "^1.3.1",
         "symfony/framework-bundle": "4.4.*",
         "symfony/orm-pack": "^1.0",
-        "symfony/yaml": "4.4.*",
-        "ext-json": "*",
-        "ext-openssl": "*",
-        "ext-sodium": "*"
+        "symfony/validator": "4.4.*",
+        "symfony/yaml": "4.4.*"
     },
     "require-dev": {
         "easycorp/easy-log-handler": "^1.0.7",
         "roave/security-advisories": "dev-master",
         "symfony/debug-bundle": "*",
-        "symfony/maker-bundle": "^1.14",
+        "symfony/maker-bundle": "^1.18",
         "symfony/monolog-bundle": "^3.0",
         "symfony/profiler-pack": "*",
         "symfony/var-dumper": "*"

@@ -8,14 +8,14 @@ use JMS\Serializer\Annotation\AccessType;
 
 /**
  * @AccessType("public_method")
- * @Serializer\XmlRoot("status")
+ * @Serializer\XmlRoot("result")
  *
- * Class ApiAuthorization
+ * Class Result
  * @package App\Entity
  *
  * @author Rafał Głuszak <rafal.gluszak@gmail.com>
  */
-class ApiAuthorization
+class Result
 {
 
     /**
@@ -38,7 +38,7 @@ class ApiAuthorization
 
     /**
      * @param string $status
-     * @return ApiAuthorization
+     * @return Result
      */
     public function setStatus(string $status): self
     {
@@ -49,7 +49,7 @@ class ApiAuthorization
 
     /**
      * @param string $message
-     * @return ApiAuthorization
+     * @return Result
      */
     public function setMessage(string $message): self
     {

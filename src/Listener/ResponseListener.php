@@ -42,13 +42,11 @@ class ResponseListener
             return $responseEvent;
         }
 
-        if ($response->getStatusCode() === Response::HTTP_OK) {
-            $response = $this->apiRequestService
-                ->serialize($request, $response)
-            ;
+        $response = $this->apiRequestService
+            ->serialize($request, $response)
+        ;
 
-            $responseEvent->setResponse($response);
-        }
+        $responseEvent->setResponse($response);
 
         return $responseEvent;
     }

@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\ApiAuthorization;
+use App\Entity\Result;
 use App\Services\AuthorizationService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class AuthorizationController extends AbstractController
 {
     /**
-     * @Route("/authorize", name="authorization")
+     * @Route("/authorize", name="authorization", methods={"POST"})
      *
      * @param Request $request
      * @param AuthorizationService $authorizationService
@@ -26,23 +26,26 @@ class AuthorizationController extends AbstractController
     {
         $isSecretValid = $authorizationService->isSecretValid($request);
 
-        $apiAuthorization = new ApiAuthorization();
+        $result = new Result();
 
-        $apiAuthorization
+        $response = new Response();
+
+        $result
             ->setStatus(Response::HTTP_OK)
             ->setMessage('')
         ;
 
+        $response->setStatusCode(Response::HTTP_OK);
+
         if (!$isSecretValid) {
-            $apiAuthorization
+            $result
                 ->setStatus(Response::HTTP_FORBIDDEN)
                 ->setMessage('Invalid secret key')
             ;
+
+            $response->setStatusCode(Response::HTTP_FORBIDDEN);
         }
 
-        $response = new Response();
-        $response->setContent(serialize($apiAuthorization));
-
-        return $response;
+        return $response->setContent(serialize($result));
     }
 }

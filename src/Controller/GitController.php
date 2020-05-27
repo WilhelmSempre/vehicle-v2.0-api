@@ -16,8 +16,9 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class GitController extends AbstractController
 {
+
     /**
-     * @Route("/git/summary", name="git_summary")
+     * @Route("/git/summary", name="git_summary", methods={"POST"})
      * @param Request $request
      * @param GitService $gitService
      * @param AuthorizationService $authorizationService
@@ -25,6 +26,8 @@ class GitController extends AbstractController
      */
     public function gitAction(Request $request, GitService $gitService, AuthorizationService $authorizationService): Response
     {
+        $response = new Response();
+
         $isSecretValid = $authorizationService->isSecretValid($request);
 
         if (!$isSecretValid) {
@@ -43,9 +46,8 @@ class GitController extends AbstractController
             ->setLastCommitHash($gitSummaryData['commit_hash'])
         ;
 
-        $response = new Response();
-        $response->setContent(serialize($gitSummary));
+        $response->setStatusCode(Response::HTTP_OK);
 
-        return $response;
+        return $response->setContent(serialize($gitSummary));
     }
 }

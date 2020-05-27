@@ -45,3 +45,15 @@ services:
 
     vehicle.authorization.service:
         class: App\Services\AuthorizationService
+
+    vehicle.user.service:
+        class: App\Services\UserService
+        arguments:
+            - "@doctrine.orm.default_entity_manager"
+
+    gedmo.listener.timestampable:
+        class: Gedmo\Timestampable\TimestampableListener
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+        calls:
+            - [ setAnnotationReader, [ "@annotation_reader" ] ]

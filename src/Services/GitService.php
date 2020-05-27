@@ -7,6 +7,8 @@ use Symfony\Component\HttpKernel\KernelInterface;
 /**
  * Class GitService
  * @package App\Services
+ *
+ * @author Rafał Głuszak <rafal.gluszak@gmail.com>
  */
 class GitService
 {
