@@ -130,7 +130,7 @@ class User
      * @param string $password
      * @return $this
      */
-    public function setPassword(string $password): self
+    public function setPassword(?string $password): self
     {
         $this->password = $password;
 

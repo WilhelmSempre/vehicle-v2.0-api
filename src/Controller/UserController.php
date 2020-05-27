@@ -131,8 +131,62 @@ class UserController extends AbstractController
             return $response->setContent(serialize($result));
         }
 
-        $user->setPassword('[HIDDEN VALUE]');
+        $user->setPassword(null);
 
         return $response->setContent(serialize($user));
+    }
+
+    /**
+     * @Route("/login", name="login", methods={"POST"})
+     *
+     * @param Request $request
+     * @param UserService $userService
+     * @return Response
+     */
+    public function loginAction(Request $request, UserService $userService): Response
+    {
+        $response = new Response();
+
+        $result = new Result();
+
+        $result
+            ->setStatus(Response::HTTP_OK)
+            ->setMessage('')
+        ;
+
+        $response->setStatusCode(Response::HTTP_OK);
+
+        if (!$request->get('password') ||
+            !$request->get('email')) {
+
+            $result
+                ->setStatus(Response::HTTP_FORBIDDEN)
+                ->setMessage('No data provided!')
+            ;
+
+            $response->setStatusCode(Response::HTTP_FORBIDDEN);
+
+            return $response->setContent(serialize($result));
+        }
+
+        $credentials = [
+            'email' => $request->request->get('email'),
+            'password' => $request->request->get('password'),
+        ];
+
+        $loginUser = $userService->login($credentials);
+
+        if (!$loginUser) {
+            $result
+                ->setStatus(Response::HTTP_FORBIDDEN)
+                ->setMessage('Invalid email or password!')
+            ;
+
+            $response->setStatusCode(Response::HTTP_FORBIDDEN);
+
+            return $response->setContent(serialize($result));
+        }
+
+        return $response;
     }
 }

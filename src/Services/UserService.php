@@ -89,4 +89,29 @@ class UserService
 
         return true;
     }
+
+    /**
+     * @param array $credentials
+     * @return bool
+     */
+    public function login(array $credentials): bool
+    {
+
+        /** @var UserRepository $userRepository */
+        $userRepository = $this->entityManager
+            ->getRepository(User::class);
+
+        /** @var User $user */
+        $user = $userRepository->findOneBy([
+            'email' => $credentials['email'],
+        ]);
+
+        if (!$user) {
+            return false;
+        }
+
+        var_dump($user);
+
+        return $credentials['password'] === $user->getPassword();
+    }
 }
