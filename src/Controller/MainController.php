@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Controller;
 
@@ -9,18 +10,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class MainController
- * @package App\Controller
- *
- * @author Rafał Głuszak <rafal.gluszak@gmail.com>
- */
 class MainController extends AbstractController
 {
-
-    /**
-     * @Route("/", name="main")
-     */
+    #[Route('/', name: 'main')]
     public function mainAction(): Response
     {
         return new Response();

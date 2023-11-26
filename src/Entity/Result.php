@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Entity;
 
@@ -6,40 +7,21 @@ use JMS\Serializer\Annotation as Serializer;
 use JMS\Serializer\Annotation\Accessor;
 use JMS\Serializer\Annotation\AccessType;
 
-/**
- * @AccessType("public_method")
- * @Serializer\XmlRoot("result")
- *
- * Class Result
- * @package App\Entity
- *
- * @author Rafał Głuszak <rafal.gluszak@gmail.com>
- */
+#[AccessType([], "public_method")]
+#[Serializer\XmlRoot([], "result")]
 class Result
 {
 
-    /**
-     * @Serializer\Type("string")
-     * @Accessor(getter="getStatus",setter="setStatus")
-     * @Serializer\XmlElement(cdata=false)
-     *
-     * @var string|null
-     */
+    #[Serializer\Type([], "string")]
+    #[Accessor([], "getStatus", "setStatus")]
+    #[Serializer\XmlElement([], false)]
     private ?string $status;
 
-    /**
-     * @Serializer\Type("string")
-     * @Accessor(getter="getMessage",setter="setMessage")
-     * @Serializer\XmlElement(cdata=false)
-     *
-     * @var string|null
-     */
+    #[Serializer\Type([], "string")]
+    #[Accessor([], "getMessage", "setMessage")]
+    #[Serializer\XmlElement([], false)]
     private ?string $message;
 
-    /**
-     * @param string $status
-     * @return Result
-     */
     public function setStatus(string $status): self
     {
         $this->status = $status;
@@ -47,10 +29,6 @@ class Result
         return $this;
     }
 
-    /**
-     * @param string $message
-     * @return Result
-     */
     public function setMessage(string $message): self
     {
         $this->message = $message;
@@ -58,17 +36,11 @@ class Result
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getStatus(): ?string
     {
         return $this->status;
     }
 
-    /**
-     * @return string
-     */
     public function getMessage(): ?string
     {
         return $this->message;

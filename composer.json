@@ -9,41 +9,45 @@
         }
     ],
     "require": {
-        "php": "^7.4",
+        "php": "^8.1",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-json": "*",
-        "ext-openssl": "*",
         "ext-sodium": "*",
-        "antishov/doctrine-extensions-bundle": "^1.4",
-        "doctrine/annotations": "^1.10",
-        "gedmo/doctrine-extensions": "^2.4",
-        "jms/serializer-bundle": "^3.5",
-        "sensio/framework-extra-bundle": "^5.5",
-        "sensiolabs/security-checker": "^6.0",
-        "symfony/console": "4.4.*",
-        "symfony/debug-pack": "^1.0",
-        "symfony/dotenv": "4.4.*",
+        "doctrine/annotations": "^2.0",
+        "doctrine/doctrine-bundle": "^2.11",
+        "doctrine/doctrine-migrations-bundle": "^3.3",
+        "doctrine/orm": "^2.17",
+        "jms/serializer-bundle": "~5.3.1",
+        "symfony/console": "6.3.*",
+        "symfony/dotenv": "6.3.*",
+        "symfony/error-handler": "6.3.*",
+        "symfony/filesystem": "6.3.*",
+        "symfony/finder": "6.3.*",
         "symfony/flex": "^1.3.1",
-        "symfony/framework-bundle": "4.4.*",
-        "symfony/orm-pack": "^1.0",
-        "symfony/validator": "4.4.*",
-        "symfony/yaml": "4.4.*"
+        "symfony/framework-bundle": "6.3.*",
+        "symfony/http-kernel": "6.3.*",
+        "symfony/mailer": "6.3.*",
+        "symfony/monolog-bundle": "^3.10",
+        "symfony/password-hasher": "6.3.*",
+        "symfony/security-bundle": "6.3.*",
+        "symfony/validator": "6.3.*",
+        "symfony/yaml": "6.3.*"
     },
     "require-dev": {
-        "easycorp/easy-log-handler": "^1.0.7",
-        "roave/security-advisories": "dev-master",
+        "phpunit/phpunit": "^8",
         "symfony/debug-bundle": "*",
-        "symfony/maker-bundle": "^1.18",
-        "symfony/monolog-bundle": "^3.0",
-        "symfony/profiler-pack": "*",
-        "symfony/var-dumper": "*"
+        "symfony/maker-bundle": "^1.51",
+        "symfony/stopwatch": "6.3.*"
     },
     "config": {
         "preferred-install": {
             "*": "dist"
         },
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "symfony/flex": true
+        }
     },
     "autoload": {
         "psr-4": {
@@ -66,8 +70,7 @@
     "scripts": {
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd",
-            "security-checker security:check": "script"
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
         },
         "post-install-cmd": [
             "@auto-scripts"
@@ -82,7 +85,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": true,
-            "require": "4.4.*"
+            "require": "6.3.*"
         }
     }
 }

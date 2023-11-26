@@ -1,21 +1,17 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Services;
 
+use SodiumException;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * Class AuthorizationService
- * @package App\Services
- */
 class AuthorizationService
 {
     /**
-     * @param $secret
-     * @param $iv
-     * @return string
+     * @throws SodiumException
      */
-    public function decrypt($secret, $iv)
+    public function decrypt($secret, $iv): bool|string
     {
         $secret = base64_decode($secret);
         $iv = base64_decode($iv);
@@ -24,8 +20,7 @@ class AuthorizationService
     }
 
     /**
-     * @param Request $request
-     * @return bool
+     * @throws SodiumException
      */
     public function isSecretValid(Request $request): bool
     {

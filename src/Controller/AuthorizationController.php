@@ -1,27 +1,22 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Controller;
 
 use App\Entity\Result;
 use App\Services\AuthorizationService;
+use SodiumException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class AuthorizationController
- * @package App\Controller
- */
 class AuthorizationController extends AbstractController
 {
     /**
-     * @Route("/authorize", name="authorization", methods={"POST"})
-     *
-     * @param Request $request
-     * @param AuthorizationService $authorizationService
-     * @return Response
+     * @throws SodiumException
      */
+    #[Route('/authorize', name: 'authorization', methods: ["POST"])]
     public function authorizeClient(Request $request, AuthorizationService $authorizationService): Response
     {
         $isSecretValid = $authorizationService->isSecretValid($request);
@@ -31,7 +26,7 @@ class AuthorizationController extends AbstractController
         $response = new Response();
 
         $result
-            ->setStatus(Response::HTTP_OK)
+            ->setStatus((string) Response::HTTP_OK)
             ->setMessage('')
         ;
 
@@ -39,7 +34,7 @@ class AuthorizationController extends AbstractController
 
         if (!$isSecretValid) {
             $result
-                ->setStatus(Response::HTTP_FORBIDDEN)
+                ->setStatus((string) Response::HTTP_FORBIDDEN)
                 ->setMessage('Invalid secret key')
             ;
 

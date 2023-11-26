@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Controller;
 
@@ -11,25 +12,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/**
- * @Route("/user", name="user_")
- *
- * Class UserController
- * @package App\Controller
- *
- * @author Rafał Głuszak <rafal.gluszak@gmail.com>
- */
+#[Route('/user', name: 'user_')]
 class UserController extends AbstractController
 {
-
-    /**
-     * @Route("/create", name="create", methods={"POST"})
-     *
-     * @param Request $request
-     * @param ValidatorInterface $validator
-     * @param UserService $userService
-     * @return Response
-     */
+    #[Route('/create', name: 'create')]
     public function createAction(Request $request, ValidatorInterface $validator, UserService $userService): Response
     {
         $result = new Result();
@@ -37,7 +23,7 @@ class UserController extends AbstractController
         $response = new Response();
 
         $result
-            ->setStatus(Response::HTTP_OK)
+            ->setStatus((string) Response::HTTP_OK)
             ->setMessage('')
         ;
 
@@ -47,7 +33,7 @@ class UserController extends AbstractController
             !$request->get('email')) {
 
             $result
-                ->setStatus(Response::HTTP_FORBIDDEN)
+                ->setStatus((string) Response::HTTP_FORBIDDEN)
                 ->setMessage('No data provided!')
             ;
 
@@ -66,8 +52,8 @@ class UserController extends AbstractController
         $errors = $validator->validate($user);
         if (count($errors) > 0) {
             $result
-                ->setStatus(Response::HTTP_FORBIDDEN)
-                ->setMessage($errors)
+                ->setStatus((string) Response::HTTP_FORBIDDEN)
+                ->setMessage((string) $errors)
             ;
 
             $response->setStatusCode(Response::HTTP_FORBIDDEN);
@@ -79,7 +65,7 @@ class UserController extends AbstractController
 
         if ($isUser) {
             $result
-                ->setStatus(Response::HTTP_FORBIDDEN)
+                ->setStatus((string) Response::HTTP_FORBIDDEN)
                 ->setMessage('User email already exists!')
             ;
 
@@ -92,7 +78,7 @@ class UserController extends AbstractController
 
         if (!$userResponse) {
             $result
-                ->setStatus(Response::HTTP_FORBIDDEN)
+                ->setStatus((string) Response::HTTP_FORBIDDEN)
                 ->setMessage('User cannot be added!')
             ;
 
@@ -104,13 +90,7 @@ class UserController extends AbstractController
         return $response->setContent(serialize($result));
     }
 
-    /**
-     * @Route("/get/email/{email}", name="get_email", methods={"GET"})
-     *
-     * @param string $email
-     * @param UserService $userService
-     * @return Response
-     */
+    #[Route('/get/email/{email}', name: 'get_email')]
     public function getAction(string $email, UserService $userService): Response
     {
         $response = new Response();
@@ -122,7 +102,7 @@ class UserController extends AbstractController
 
         if (!$user) {
             $result
-                ->setStatus(Response::HTTP_NOT_FOUND)
+                ->setStatus((string) Response::HTTP_NOT_FOUND)
                 ->setMessage('User not found!')
             ;
 
@@ -136,13 +116,7 @@ class UserController extends AbstractController
         return $response->setContent(serialize($user));
     }
 
-    /**
-     * @Route("/login", name="login", methods={"POST"})
-     *
-     * @param Request $request
-     * @param UserService $userService
-     * @return Response
-     */
+    #[Route('/login', name: 'login')]
     public function loginAction(Request $request, UserService $userService): Response
     {
         $response = new Response();
@@ -150,7 +124,7 @@ class UserController extends AbstractController
         $result = new Result();
 
         $result
-            ->setStatus(Response::HTTP_OK)
+            ->setStatus((string) Response::HTTP_OK)
             ->setMessage('')
         ;
 
@@ -160,7 +134,7 @@ class UserController extends AbstractController
             !$request->get('email')) {
 
             $result
-                ->setStatus(Response::HTTP_FORBIDDEN)
+                ->setStatus((string) Response::HTTP_FORBIDDEN)
                 ->setMessage('No data provided!')
             ;
 
@@ -178,7 +152,7 @@ class UserController extends AbstractController
 
         if (!$loginUser) {
             $result
-                ->setStatus(Response::HTTP_FORBIDDEN)
+                ->setStatus((string) Response::HTTP_FORBIDDEN)
                 ->setMessage('Invalid email or password!')
             ;
 

@@ -1,40 +1,22 @@
 <?php
-
+declare(strict_types=1);
 
 namespace App\Services;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\ORMException;
+use Doctrine\ORM\Exception\ORMException;
 
-/**
- * Class UserService
- * @package App\Services
- *
- * @author Rafał Głuszak <rafal.gluszak@gmail.com>
- */
 class UserService
 {
-
-    /**
-     * @var EntityManagerInterface
-     */
     private EntityManagerInterface $entityManager;
 
-    /**
-     * UserService constructor.
-     * @param EntityManagerInterface $entityManager
-     */
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
     }
 
-    /**
-     * @param User $user
-     * @return bool
-     */
     public function createUser(User $user): bool
     {
         $this->entityManager->persist($user);
@@ -48,10 +30,6 @@ class UserService
         return true;
     }
 
-    /**
-     * @param int $id
-     * @return User
-     */
     public function getUserById(int $id): ?User
     {
         return $this->entityManager
@@ -59,10 +37,6 @@ class UserService
         ;
     }
 
-    /**
-     * @param string $email
-     * @return object
-     */
     public function getUserByEmail(string $email): ?object
     {
 
@@ -75,10 +49,6 @@ class UserService
         ]);
     }
 
-    /**
-     * @param string $email
-     * @return bool
-     */
     public function isUser(string $email): bool
     {
         $user = $this->getUserByEmail($email);
@@ -90,10 +60,6 @@ class UserService
         return true;
     }
 
-    /**
-     * @param array $credentials
-     * @return bool
-     */
     public function login(array $credentials): bool
     {
 
@@ -109,8 +75,6 @@ class UserService
         if (!$user) {
             return false;
         }
-
-        var_dump($user);
 
         return $credentials['password'] === $user->getPassword();
     }

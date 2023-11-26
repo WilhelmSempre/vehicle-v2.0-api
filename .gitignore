@@ -1,6 +1,5 @@
 /vendor/
 .idea/
-composer.lock
 phpunit.xml.dist
 .php_cs.cache
 .phpunit.result.cache
@@ -23,3 +22,8 @@ var/log
 /vendor/
 certs/
 ###< symfony/framework-bundle ###
+
+###> phpunit/phpunit ###
+/phpunit.xml
+.phpunit.result.cache
+###< phpunit/phpunit ###

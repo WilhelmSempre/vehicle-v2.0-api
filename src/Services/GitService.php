@@ -1,53 +1,39 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Services;
 
 use Symfony\Component\HttpKernel\KernelInterface;
 
-/**
- * Class GitService
- * @package App\Services
- *
- * @author Rafał Głuszak <rafal.gluszak@gmail.com>
- */
 class GitService
 {
-
-    /**
-     * @var string
-     */
     private string $projectDir;
 
-    /**
-     * GitService constructor.
-     * @param KernelInterface $kernel
-     */
     public function __construct(KernelInterface $kernel)
     {
         $this->projectDir = $kernel->getProjectDir();
     }
 
-    /**
-     * @return array
-     */
     private function getGitLogs(): array
     {
         chdir($this->projectDir);
-        exec('git log',$gitConsoleData);
+        exec('git log',$gitConsoleData, $resultCode);
+
+        var_dump($this->projectDir);
 
         $history = [];
 
         foreach($gitConsoleData as $line) {
-            if (strpos($line, 'commit') === 0) {
+            if (str_starts_with($line, 'commit')) {
                 if (!empty($commit)) {
-                    array_push($history, $commit);
+                    $history[] = $commit;
                     unset($commit);
                 }
 
                 $commit['hash'] = substr($line, strlen('commit'));
-            } else if (strpos($line, 'Author') === 0) {
+            } else if (str_starts_with($line, 'Author')) {
                 $commit['author'] = substr($line, strlen('Author:'));
-            } else if(strpos($line, 'Date') === 0) {
+            } else if (str_starts_with($line, 'Date')) {
                 $commit['date'] = substr($line, strlen('Date:'));
             } else {
                 if (isset($commit['message'])) {
@@ -61,23 +47,21 @@ class GitService
         return $history;
     }
 
-    /**
-     * @return array
-     */
-    public function getLastGitCommit(): array
+    public function getLastGitCommit(): ?array
     {
         $gitLogsArray = $this->getGitLogs();
 
         return array_shift($gitLogsArray);
     }
 
-    /**
-     * @return array
-     */
     public function loadGitSummary(): array
     {
         $branchName = $this->getBranchName();
         $lastGitCommit = $this->getLastGitCommit();
+
+        if (!$lastGitCommit) {
+            return [];
+        }
 
         return [
             'branch' => $branchName,
@@ -88,9 +72,6 @@ class GitService
         ];
     }
 
-    /**
-     * @return string
-     */
     private function getBranchName(): string
     {
         chdir($this->projectDir);
